@@ -7,9 +7,14 @@ venv/
 .env
 .env.*
 
+dataset/
+
 vision/models/*
 audio/models/*
 
 AGENTS.md
 scripts/
 tests/
+runs/
+
+yolov8n.pt

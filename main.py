@@ -6,7 +6,7 @@ from fusion.logic import FusionLogic
 
 def main():
     print("System uruchomiony. Naciśnij 'q' w oknie detekcji, aby zakończyć.")
-    fusion = FusionLogic(time_window=3.0)     # okno czasowe 3s
+    fusion = FusionLogic(time_window=3.0)
 
     #siren_detector = SirenDetector(fusion=fusion)
     vehicle_detector = VehicleDetector(fusion=fusion)
@@ -23,7 +23,7 @@ def main():
         while True:
             if fusion.should_trigger():
                 print("🚨 POJAZD UPRZYWILEJOWANY WYKRYTY!")
-            time.sleep(5)
+            time.sleep(1)
     except KeyboardInterrupt:
         pass
 

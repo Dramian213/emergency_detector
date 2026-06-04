@@ -3,17 +3,18 @@ from ultralytics import YOLO
 
 # Klasy COCO powiązane z pojazdami uprzywilejowanymi
 VEHICLE_CLASSES = {
-    2: "car",
-    3: "motorcycle",
-    5: "bus",
-    7: "truck",
+    0: "emergency",
+    1: "car",
+    2: "truck",
+    3: "bus",
+    4: "motorcycle",
 }
 
 class VehicleDetector:
     def __init__(self, fusion, camera_index=0, conf_threshold=0.5):
         self.fusion = fusion
         self.conf_threshold = conf_threshold
-        self.model = YOLO("vision/models/yolov8n.pt")
+        self.model = YOLO("vision/models/emergency.pt")
         self.cap = cv2.VideoCapture(camera_index)
 
         if not self.cap.isOpened():
