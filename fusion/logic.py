@@ -5,6 +5,7 @@ class FusionLogic:
         self.time_window = time_window
         #self._audio_detected = False
         self._vision_detected = False
+        self._emergency_detected = False
         #self._last_audio_time = 0.0
         self._last_vision_time = 0.0
 
@@ -13,10 +14,17 @@ class FusionLogic:
     #        self._last_audio_time = time.time()
     #    self._audio_detected = detected
 
-    def update_vision(self, detected: bool):
+    def update_vision(self, detected: bool, is_emergency: bool):
+        self._vision_detected = detected
+        self._emergency_detected = is_emergency
         if detected:
             self._last_vision_time = time.time()
-        self._vision_detected = detected
+
+    def is_vision_active(self) -> bool:
+        return self._vision_detected
+
+    def is_emergency_active(self) -> bool:
+        return self._emergency_detected
 
     def should_trigger(self) -> bool:
         now = time.time()

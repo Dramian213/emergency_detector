@@ -14,7 +14,7 @@ class VehicleDetector:
     def __init__(self, fusion, camera_index=0, conf_threshold=0.5):
         self.fusion = fusion
         self.conf_threshold = conf_threshold
-        self.model = YOLO("vision/models/emergency.pt")
+        self.model = YOLO("vision/models/emergency_final.pt")
         self.cap = cv2.VideoCapture(camera_index)
 
         if not self.cap.isOpened():
@@ -30,6 +30,7 @@ class VehicleDetector:
 
             results = self.model(frame, verbose=False)[0]
             detected = False
+            emergency = False
 
             for box in results.boxes:
                 cls_id = int(box.cls[0])
@@ -52,23 +53,44 @@ class VehicleDetector:
                         2
                     )
 
-            self.fusion.update_vision(detected)
+                    if cls_id == 0:
+                        emergency = True
+                        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+            self.fusion.update_vision(detected, is_emergency=emergency)
 
             status_text = "POJAZD WYKRYTY" if detected else "BRAK POJAZDU"
             color = (0, 255, 0) if detected else (0, 0, 255)
             cv2.putText(
                 frame,
                 status_text,
-                (20, 40),
+                (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 1.0,
                 color,
                 2
             )
 
+            right_text = "UPRZYWILEJOWANY"
+            right_color = (0, 255, 0) if emergency else (0, 0, 255)
+            cv2.putText(
+                frame,
+                right_text,
+                (frame.shape[1] - 300, 30),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1.0,
+                right_color,
+                2
+            )
+
             cv2.imshow("Detekcja", frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('q'):
                 print("Zakończono detekcję.")
+                break
+            if cv2.getWindowProperty("Detekcja", cv2.WND_PROP_VISIBLE) < 1:
+                print("Zamknięto okno detekcji.")
                 break
 
         self.cap.release()

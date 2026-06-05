@@ -19,11 +19,33 @@ def main():
     for t in threads:
         t.start()
 
+    last_emergency_state = False
+    last_any_state = False
+
     try:
         while True:
-            if fusion.should_trigger():
-                print("🚨 POJAZD UPRZYWILEJOWANY WYKRYTY!")
-            time.sleep(1)
+            current_emergency = fusion.is_emergency_active()
+            current_any = fusion.is_vision_active()
+
+            if current_emergency and not last_emergency_state:
+                print("🚨 POJAZD UPRZYWILEJOWANY WYKRYTY")
+
+            elif not current_emergency and last_emergency_state:
+                if current_any:
+                    print("ℹ️ INNE POJAZDY")
+                else:
+                    print("ℹ️ BRAK POJAZDÓW")
+
+            elif current_any and not last_any_state:
+                print("ℹ️ INNE POJAZDY")
+
+            elif not current_any and last_any_state:
+                print("ℹ️ BRAK POJAZDÓW")
+
+            last_emergency_state = current_emergency
+            last_any_state = current_any
+            time.sleep(0.1)
+
     except KeyboardInterrupt:
         pass
 

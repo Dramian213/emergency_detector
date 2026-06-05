@@ -10,11 +10,11 @@ venv/
 dataset/
 
 vision/models/*
+!vision/models/emergency_final.pt
 audio/models/*
 
-AGENTS.md
-scripts/
 tests/
 runs/
 
+split_dataset.py
 yolov8n.pt
