@@ -17,4 +17,4 @@ tests/
 runs/
 
 split_dataset.py
-yolov8n.pt
+yolo26n.pt

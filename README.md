@@ -4,7 +4,7 @@
 
 Emergency Vehicle Detector to inteligentny system przeznaczony do rozpoznawania pojazdów uprzywilejowanych w czasie rzeczywistym z wykorzystaniem technologii widzenia komputerowego. System łączy dwa sposoby wykrywania za pomocą logiki fuzyjnej, aby zapewnić niezawodną identyfikację pojazdów uprzywilejowanych.
 
-**Obecny cel:** Wykrywanie oparte na wizji przy użyciu YOLOv8 przeszkolonego w zakresie modeli pojazdów uprzywilejowanych
+**Obecny cel:** Wykrywanie oparte na wizji przy użyciu YOLO26 przeszkolonego w zakresie modeli pojazdów uprzywilejowanych
 
 **Planowane funkcje:** Wykrywanie syreny dźwiękowej
 
@@ -33,7 +33,7 @@ Aplikacja wyświetla:
 ## Architektura
 
 ### Vision Module (`vision/detector.py`)
-- **Model**: niestandardowy model oparty na YOLOv8, przeszkolony w pojazdach uprzywilejowanych
+- **Model**: niestandardowy model oparty na YOLO26, przeszkolony w pojazdach uprzywilejowanych
 - **Wejście**: strumień wideo w czasie rzeczywistym z kamery
 - **Wyjście**: wykrycia pojazdów z klasyfikacją i wynikami pewności
 - **Klasy pojazdów**:
@@ -59,7 +59,7 @@ Aplikacja wyświetla:
 
 ### Zależności
 - `opencv-python` - wizja komputerowa
-- `ultralytics` - framework YOLOv8
+- `ultralytics` - framework YOLO26
 - `torch` - głębokie uczenie
 - `numpy` - obliczenia
 - `sounddevice` - obsługa wejścia audio

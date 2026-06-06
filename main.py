@@ -6,10 +6,16 @@ from fusion.logic import FusionLogic
 
 def main():
     print("System uruchomiony. Naciśnij 'q' w oknie detekcji, aby zakończyć.")
-    fusion = FusionLogic(time_window=3.0)
+    fusion = FusionLogic(time_window=3.0, confirm_frames=5)
 
     #siren_detector = SirenDetector(fusion=fusion)
-    vehicle_detector = VehicleDetector(fusion=fusion)
+    vehicle_detector = VehicleDetector(
+        fusion=fusion,
+        conf_threshold=0.5,
+        emergency_conf_threshold=0.7,
+        min_box_area_ratio=0.01,
+        confirm_frames=3,
+    )
 
     # Uruchomienie wątków równoległych
     threads = [
@@ -29,16 +35,13 @@ def main():
 
             if current_emergency and not last_emergency_state:
                 print("🚨 POJAZD UPRZYWILEJOWANY WYKRYTY")
-
             elif not current_emergency and last_emergency_state:
                 if current_any:
                     print("ℹ️ INNE POJAZDY")
                 else:
                     print("ℹ️ BRAK POJAZDÓW")
-
             elif current_any and not last_any_state:
                 print("ℹ️ INNE POJAZDY")
-
             elif not current_any and last_any_state:
                 print("ℹ️ BRAK POJAZDÓW")
 
