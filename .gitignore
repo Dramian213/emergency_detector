@@ -1,20 +1,67 @@
+# -------------------------
+# PYTHON
+# -------------------------
 __pycache__/
-.venv/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
 venv/
-
-.idea/
-
+.venv/
+env/
 .env
 .env.*
 
+# -------------------------
+# IDE
+# -------------------------
+.vscode/
+.idea/
+
+# -------------------------
+# OS FILES
+# -------------------------
+Thumbs.db
+.DS_Store
+
+# -------------------------
+# LOGS
+# -------------------------
+*.log
+
+# -------------------------
+# DATASETS
+# -------------------------
 dataset/
 
+# -------------------------
+# MODELS (ignore all except final)
+# -------------------------
 vision/models/*
 !vision/models/emergency_final.pt
+
 audio/models/*
 
-tests/
+# YOLO weights
+*.pt
+*.pth
+*.onnx
+*.h5
+*.ckpt
+
+# -------------------------
+# TRAINING OUTPUTS
+# -------------------------
 runs/
 
+# -------------------------
+# TESTS
+# -------------------------
+tests/
+
+# -------------------------
+# PROJECT-SPECIFIC FILES
+# -------------------------
 split_dataset.py
 yolo26n.pt
