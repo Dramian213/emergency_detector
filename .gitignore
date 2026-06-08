@@ -1,67 +1,24 @@
-# -------------------------
-# PYTHON
-# -------------------------
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
 
-# Virtual environments
 venv/
 .venv/
 env/
 .env
 .env.*
 
-# -------------------------
-# IDE
-# -------------------------
-.vscode/
 .idea/
 
-# -------------------------
-# OS FILES
-# -------------------------
-Thumbs.db
-.DS_Store
-
-# -------------------------
-# LOGS
-# -------------------------
-*.log
-
-# -------------------------
-# DATASETS
-# -------------------------
 dataset/
+audio/datasets/
 
-# -------------------------
-# MODELS (ignore all except final)
-# -------------------------
 vision/models/*
 !vision/models/emergency_final.pt
 
-audio/models/*
+audio/models/
+!audio/models/wytrenowany_wykrywacz.joblib
 
-# YOLO weights
-*.pt
-*.pth
-*.onnx
-*.h5
-*.ckpt
-
-# -------------------------
-# TRAINING OUTPUTS
-# -------------------------
 runs/
-
-# -------------------------
-# TESTS
-# -------------------------
 tests/
 
-# -------------------------
-# PROJECT-SPECIFIC FILES
-# -------------------------
 split_dataset.py
 yolo26n.pt

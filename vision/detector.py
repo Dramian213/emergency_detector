@@ -1,3 +1,4 @@
+import os
 import cv2
 from ultralytics import YOLO
 
@@ -8,17 +9,25 @@ VEHICLE_CLASSES = {
     3: "bus",
 }
 
+
 class VehicleDetector:
-    def __init__(self, fusion, camera_index=0, conf_threshold=0.5, emergency_conf_threshold=0.8, min_box_area_ratio=0.01, confirm_frames=3):
+    def __init__(self, fusion, camera_index=0, conf_threshold=0.5, emergency_conf_threshold=0.8,
+                 min_box_area_ratio=0.01, confirm_frames=3):
         self.fusion = fusion
         self.conf_threshold = conf_threshold
         self.emergency_conf_threshold = emergency_conf_threshold
         self.min_box_area_ratio = min_box_area_ratio
         self.confirm_frames = confirm_frames
 
-        self.model = YOLO("vision/models/emergency_final.pt")
-        self.cap = cv2.VideoCapture(camera_index)
+        # --- POPRAWKA: Dynamiczna ścieżka bezwzględna do wag YOLO ---
+        AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
+        PLIK_MODELU_YOLO = os.path.join(AKTUALNY_FOLDER, "models", "emergency_final.pt")
 
+        print(f"📦 [Wizja AI] Ładowanie modelu YOLO z:\n   -> {PLIK_MODELU_YOLO}")
+        self.model = YOLO(PLIK_MODELU_YOLO)
+        # -------------------------------------------------------------
+
+        self.cap = cv2.VideoCapture(camera_index)
         self._recent_emergency = []
 
         if not self.cap.isOpened():
