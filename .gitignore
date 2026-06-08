@@ -9,13 +9,12 @@ env/
 .idea/
 
 dataset/
-audio/datasets/
+audio/dataset/
 
 vision/models/*
 !vision/models/emergency_final.pt
 
-audio/models/
-!audio/models/wytrenowany_wykrywacz.joblib
+audio/models/dataset/
 
 runs/
 tests/
