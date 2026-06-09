@@ -8,16 +8,20 @@ env/
 
 .idea/
 
-dataset/
+# Zbiory danych
 audio/dataset/
+vision/dataset/
 
+# Wagi YOLO
 vision/models/*
 !vision/models/emergency_final.pt
 
-audio/models/dataset/
+# Wagi audio
+audio/models/*
+!audio/models/wytrenowany_wykrywacz.joblib
 
+# Wyniki YOLO
 runs/
-tests/
 
-split_dataset.py
+# Pomocnicze
 yolo26n.pt

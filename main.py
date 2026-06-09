@@ -3,13 +3,12 @@ import time
 import sys
 import os
 
-# Wymuszamy poprawną ścieżkę wyszukiwania modułów, gdyby skrypt był odpalany z różnych folderów
 AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
 if AKTUALNY_FOLDER not in sys.path:
     sys.path.insert(0, AKTUALNY_FOLDER)
 
 from vision.detector import VehicleDetector
-from audio.models.live_cpu import uruchom_nasluch_live_cpu
+from audio.live_cpu import uruchom_nasluch_live_cpu
 from fusion.logic import FusionLogic
 
 
@@ -70,7 +69,7 @@ def main():
 
             # Wypisujemy stan tylko wtedy, gdy uległ zmianie
             if state != last_state:
-                # Triki konsolowe: \r i czyszczenie linii, żeby nadpisać dynamiczny print z live_cpu.py
+                # \r i czyszczenie linii, żeby nadpisać dynamiczny print z live_cpu.py
                 sys.stdout.write("\r" + " " * 90 + "\r")
                 print(state, flush=True)
                 last_state = state

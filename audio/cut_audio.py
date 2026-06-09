@@ -2,10 +2,12 @@ import os
 import soundfile as sf
 
 # --- KONFIGURACJA ---
-PLIK_SYREN = "../dataset/Uprzywilejowane.wav"
-PLIK_TLA = "../dataset/Ulica_raw.wav"
+AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
+PLIK_SYREN = os.path.join(AKTUALNY_FOLDER, "dataset", "Uprzywilejowane.wav")
+PLIK_TLA = os.path.join(AKTUALNY_FOLDER, "dataset", "Ulica_raw.wav")
 DLUGOSC_SEK = 3
 SAMPLE_RATE = 16000
+
 
 def tnij_audio(sciezka_in, folder_out):
     if not os.path.exists(sciezka_in):
@@ -28,5 +30,5 @@ def tnij_audio(sciezka_in, folder_out):
     print(f"✅ Zapisano w: {folder_out}")
 
 if __name__ == "__main__":
-    tnij_audio(PLIK_SYREN, "dataset/syrena")
-    tnij_audio(PLIK_TLA, "dataset/tlo")
+    tnij_audio(PLIK_SYREN, os.path.join(AKTUALNY_FOLDER, "dataset", "syrena"))
+    tnij_audio(PLIK_TLA, os.path.join(AKTUALNY_FOLDER, "dataset", "tlo"))

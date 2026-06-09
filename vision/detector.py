@@ -19,13 +19,11 @@ class VehicleDetector:
         self.min_box_area_ratio = min_box_area_ratio
         self.confirm_frames = confirm_frames
 
-        # --- POPRAWKA: Dynamiczna ścieżka bezwzględna do wag YOLO ---
         AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
         PLIK_MODELU_YOLO = os.path.join(AKTUALNY_FOLDER, "models", "emergency_final.pt")
 
         print(f"📦 [Wizja AI] Ładowanie modelu YOLO z:\n   -> {PLIK_MODELU_YOLO}")
         self.model = YOLO(PLIK_MODELU_YOLO)
-        # -------------------------------------------------------------
 
         self.cap = cv2.VideoCapture(camera_index)
         self._recent_emergency = []

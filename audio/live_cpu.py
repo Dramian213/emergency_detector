@@ -9,7 +9,7 @@ from transformers import AutoFeatureExtractor, Wav2Vec2Model
 
 # --- AUTOMATYCZNA ŚCIEŻKA DO MODELU ---
 AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
-PLIK_MODELU = os.path.join(AKTUALNY_FOLDER, "wytrenowany_wykrywacz.joblib")
+PLIK_MODELU = os.path.join(AKTUALNY_FOLDER, "models", "wytrenowany_wykrywacz.joblib")
 MODEL_NAME = "facebook/wav2vec2-base"
 
 

@@ -11,11 +11,10 @@ from sklearn.model_selection import train_test_split
 
 MODEL_NAME = "facebook/wav2vec2-base"
 
-# --- POPRAWIONA KONFIGURACJA ŚCIEŻEK (Lokalna dla folderu audio/models) ---
 AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
 FOLDER_SYREN = os.path.join(AKTUALNY_FOLDER, "dataset", "syrena")
 FOLDER_TLA = os.path.join(AKTUALNY_FOLDER, "dataset", "tlo")
-DOCELOWY_PLIK_MODELU = os.path.join(AKTUALNY_FOLDER, "wytrenowany_wykrywacz.joblib")
+DOCELOWY_PLIK_MODELU = os.path.join(AKTUALNY_FOLDER, "models", "wytrenowany_wykrywacz.joblib")
 
 print("📦 [Trening] Ładowanie modelu Wav2Vec2...")
 feature_extractor = AutoFeatureExtractor.from_pretrained(MODEL_NAME)
