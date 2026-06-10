@@ -22,12 +22,12 @@ def tnij_audio(sciezka_in, folder_out):
     probki_na_kawalek = DLUGOSC_SEK * SAMPLE_RATE
     ilosc = len(data) // probki_na_kawalek
 
-    print(f"✂️ Tnę {sciezka_in} na {ilosc} części po {DLUGOSC_SEK}s...")
+    print(f"Tnę {sciezka_in} na {ilosc} części po {DLUGOSC_SEK}s...")
     for i in range(ilosc):
         start = i * probki_na_kawalek
         kawalek = data[start:start + probki_na_kawalek]
         sf.write(os.path.join(folder_out, f"chunk_{i:03d}.wav"), kawalek, SAMPLE_RATE)
-    print(f"✅ Zapisano w: {folder_out}")
+    print(f"Zapisano w: {folder_out}")
 
 if __name__ == "__main__":
     tnij_audio(PLIK_SYREN, os.path.join(AKTUALNY_FOLDER, "dataset", "syrena"))

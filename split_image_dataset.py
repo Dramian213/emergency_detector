@@ -5,19 +5,16 @@ from collections import defaultdict
 
 random.seed(2026)
 
-# --- KONFIGURACJA (dostosuj jeśli Twoje foldery są inne) ---
 SRC_IMG_DIR = "vision/dataset/images_all"   # folder z wszystkimi zdjęciami (pliki .jpg/.png)
 SRC_LABEL_DIR = "vision/dataset/labels_all" # folder z odpowiadającymi plikami .txt (YOLO)
 DST_ROOT = "vision/dataset"                 # wynikowy katalog (dataset/images/{train,val,test}, labels/{...})
 
-# Pożądane proporcje splitu
+# Proporcje splitu
 RATIOS = {"train": 0.6, "val": 0.2, "test": 0.2}
 
-# Mapowanie nazw klas (dostosuj jeśli chcesz inny porządek)
+# Mapowanie nazw klas
 CLASS_NAMES = {0: "emergency", 1: "car", 2: "truck", 3: "bus"}
 NUM_CLASSES = len(CLASS_NAMES)
-
-# ------------------------------------------------------------
 
 os.makedirs(os.path.join(DST_ROOT, "images", "train"), exist_ok=True)
 os.makedirs(os.path.join(DST_ROOT, "images", "val"), exist_ok=True)
@@ -26,12 +23,12 @@ os.makedirs(os.path.join(DST_ROOT, "labels", "train"), exist_ok=True)
 os.makedirs(os.path.join(DST_ROOT, "labels", "val"), exist_ok=True)
 os.makedirs(os.path.join(DST_ROOT, "labels", "test"), exist_ok=True)
 
-# Zbierz listę obrazów
+# Lista obrazów
 imgs = [f for f in os.listdir(SRC_IMG_DIR) if f.lower().endswith((".jpg", ".jpeg", ".png"))]
 imgs.sort()
 random.shuffle(imgs)
 
-# Dla każdego obrazu wczytaj zestaw klas obecnych w pliku .txt
+# Dla każdego obrazu wczytaj zestaw obecnych klas
 def read_classes_for_image(img_name):
     lbl_name = os.path.splitext(img_name)[0] + ".txt"
     lbl_path = os.path.join(SRC_LABEL_DIR, lbl_name)
@@ -46,7 +43,6 @@ def read_classes_for_image(img_name):
                     cls = int(float(parts[0]))
                     classes.add(cls)
                 except:
-                    # jeśli etykieta nie jest liczbą - ignoruj
                     continue
     return classes
 
@@ -71,14 +67,14 @@ for c in range(NUM_CLASSES):
 
 # Inicjalizuj aktualne liczby
 current = {c: {split: 0 for split in RATIOS} for c in range(NUM_CLASSES)}
-assignments = {}  # img -> split
+assignments = {}  # img do split
 
 # Sortuj obrazy malejąco wg liczby klas (trudniejsze przypadki najpierw)
 sorted_imgs = sorted(imgs, key=lambda x: -len(img_classes[x]))
 
 for img in sorted_imgs:
     classes = img_classes[img]
-    # Dla obrazu oblicz "deficyt" dla każdego splitu jako suma braków klasy (desired - current) dla klas w obrazie
+    # Deficyt dla każdego splitu - suma braków klasy (desired - current) dla klas w obrazie
     split_deficits = {}
     for split in RATIOS:
         deficit = 0
@@ -88,7 +84,7 @@ for img in sorted_imgs:
             deficit += max(0, need - cur)
         split_deficits[split] = deficit
 
-    # Wybierz split z największym deficytem; jeśli wszystkie 0 => przypisz do train
+    # Wybierz split z największym deficytem, jeśli wszystkie 0 => przypisz do train
     best_split = max(split_deficits, key=lambda k: (split_deficits[k], 1 if k=="train" else 0))
     assignments[img] = best_split
 
@@ -113,7 +109,7 @@ for img, split in assignments.items():
     if os.path.exists(src_lbl):
         shutil.copy2(src_lbl, dst_lbl)
     else:
-        # jeśli brak pliku label (rzadkie), utwórz pusty plik
+        # jeśli brak pliku label, utwórz pusty plik
         open(dst_lbl, "w", encoding="utf-8").close()
 
 print("\nKopiowanie zakończone. Podsumowanie liczebności:")

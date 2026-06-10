@@ -22,7 +22,7 @@ class VehicleDetector:
         AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
         PLIK_MODELU_YOLO = os.path.join(AKTUALNY_FOLDER, "models", "emergency_final.pt")
 
-        print(f"📦 [Wizja AI] Ładowanie modelu YOLO z:\n   -> {PLIK_MODELU_YOLO}")
+        print(f"[Wizja AI] Ładowanie modelu YOLO z:\n   -> {PLIK_MODELU_YOLO}")
         self.model = YOLO(PLIK_MODELU_YOLO)
 
         self.cap = cv2.VideoCapture(camera_index)

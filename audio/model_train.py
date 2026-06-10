@@ -16,7 +16,7 @@ FOLDER_SYREN = os.path.join(AKTUALNY_FOLDER, "dataset", "syrena")
 FOLDER_TLA = os.path.join(AKTUALNY_FOLDER, "dataset", "tlo")
 DOCELOWY_PLIK_MODELU = os.path.join(AKTUALNY_FOLDER, "models", "wytrenowany_wykrywacz.joblib")
 
-print("📦 [Trening] Ładowanie modelu Wav2Vec2...")
+print("[Trening] Ładowanie modelu Wav2Vec2...")
 feature_extractor = AutoFeatureExtractor.from_pretrained(MODEL_NAME)
 model = Wav2Vec2Model.from_pretrained(MODEL_NAME)
 model.eval()
@@ -33,7 +33,7 @@ def extract_features(audio):
 
 
 def trenuj_system_cpu():
-    print("💻 Inicjalizacja ekstraktora cech Wav2Vec2 na CPU...")
+    print("Inicjalizacja ekstraktora cech Wav2Vec2 na CPU...")
 
     # Słownik kategorii korzysta teraz bezpośrednio ze zmiennych globalnych
     kategorie = {FOLDER_SYREN: 1, FOLDER_TLA: 0}
@@ -41,7 +41,7 @@ def trenuj_system_cpu():
     X = []
     y = []
 
-    print("🧠 Wyciąganie cech matematycznych z plików...")
+    print("Wyciąganie cech matematycznych z plików...")
     start_time = time.time()
 
     for folder, etykieta in kategorie.items():
@@ -66,23 +66,23 @@ def trenuj_system_cpu():
     X = np.array(X)
     y = np.array(y)
 
-    print(f"⚡ CPU zakończyło pracę w {time.time() - start_time:.2f}s! Mamy {X.shape[0]} próbek w bazie.")
+    print(f"CPU zakończyło pracę w {time.time() - start_time:.2f}s! Mamy {X.shape[0]} próbek w bazie.")
 
     # Podział na zbiór treningowy i testowy
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
 
-    print("🌲 Trening klasyfikatora Random Forest...")
+    print("Trening klasyfikatora Random Forest...")
     klasyfikator = RandomForestClassifier(n_estimators=100, random_state=42)
     klasyfikator.fit(X_train, y_train)
 
     skutecznosc = klasyfikator.score(X_test, y_test)
-    print(f"\n🎯 SKUTECZNOŚĆ MODELU NA ZBIORZE TESTOWYM: {skutecznosc:.2%}")
+    print(f"\nKUTECZNOŚĆ MODELU NA ZBIORZE TESTOWYM: {skutecznosc:.2%}")
 
-    # Zapis klasyfikatora w tym samym folderze co skrypt
+    # Zapis klasyfikatora
     joblib.dump(klasyfikator, DOCELOWY_PLIK_MODELU)
-    print(f"💾 Model pomyślnie zapisany w lokalizacji:\n   -> {DOCELOWY_PLIK_MODELU}")
+    print(f"💾 Model pomyślnie zapisany w lokalizacji:\n -> {DOCELOWY_PLIK_MODELU}")
 
 
 if __name__ == "__main__":

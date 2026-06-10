@@ -19,7 +19,7 @@ class FusionLogic:
         self._audio_history = deque(maxlen=confirm_frames)
         self._last_audio_time = 0.0
 
-    # --- AUDIO ---
+    # AUDIO
     def update_audio(self, detected: bool):
         now = time.time()
         self._audio_history.append(bool(detected))
@@ -29,16 +29,16 @@ class FusionLogic:
 
     def is_siren_active(self) -> bool:
         now = time.time()
-        # Sprawdzamy czy w oknie czasowym (np. 3 sekundy) wykryto syrenę
+        # Sprawdzamy czy w oknie czasowym wykryto syrenę
         recent = (now - self._last_audio_time) < self.time_window
 
-        # POPRAWKA: Wystarczy, że w ostatniej historii była chociaż JEDNA potwierdzona syrena
-        # i mieści się to w czasie time_window. To eliminuje problem gubienia klatek na CPU.
+        # Wystarczy, że w ostatniej historii była chociaż jedna potwierdzona syrena
+        # i mieści się to w czasie time_window
         ma_sygnal_w_historii = any(self._audio_history)
 
         return ma_sygnal_w_historii and recent
 
-    # --- VISION ---
+    # VISION
     def update_vision(self, detected: bool, is_emergency: bool = False):
         now = time.time()
 
@@ -67,6 +67,6 @@ class FusionLogic:
         recent = (now - self._last_emergency_time) < self.time_window
         return self._emergency_detected and recent
 
-    # --- FUZJA ---
+    # FUSION
     def is_both_active(self) -> bool:
         return self.is_siren_active() and self.is_emergency_active()

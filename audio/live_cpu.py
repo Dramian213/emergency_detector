@@ -7,14 +7,12 @@ import sounddevice as sd
 import torch
 from transformers import AutoFeatureExtractor, Wav2Vec2Model
 
-# --- AUTOMATYCZNA ŚCIEŻKA DO MODELU ---
 AKTUALNY_FOLDER = os.path.dirname(os.path.abspath(__file__))
 PLIK_MODELU = os.path.join(AKTUALNY_FOLDER, "models", "wytrenowany_wykrywacz.joblib")
 MODEL_NAME = "facebook/wav2vec2-base"
 
-
 def extract_features(audio, feature_extractor, model):
-    """Wyciąganie cech Wav2Vec2 dla pojedynczego okna audio"""
+    # Wyciąganie cech Wav2Vec2 dla pojedynczego okna audio
     inputs = feature_extractor(
         audio,
         sampling_rate=16000,
@@ -26,8 +24,8 @@ def extract_features(audio, feature_extractor, model):
 
 
 def uruchom_nasluch_live_cpu(fusion):
-    """Główna funkcja wątku audio wywoływana przez main.py"""
-    print("📦 [Audio AI] Ładowanie modeli do klasyfikacji online...")
+    # Główna funkcja wątku audio wywoływana przez main.py
+    print("[Audio AI] Ładowanie modeli do klasyfikacji online...")
 
     if not os.path.exists(PLIK_MODELU):
         print(f"\n❌ [Audio AI] Błąd: Brak pliku modelu pod ścieżką:\n   -> {PLIK_MODELU}")
@@ -40,7 +38,7 @@ def uruchom_nasluch_live_cpu(fusion):
         feature_extractor = AutoFeatureExtractor.from_pretrained(MODEL_NAME)
         model = Wav2Vec2Model.from_pretrained(MODEL_NAME)
         model.eval()
-        print("🎤 [Audio AI] NASŁUCH MIKROFONU URUCHOMIONY. Analiza środowiska co 1.0s...")
+        print("[Audio AI] NASŁUCH MIKROFONU URUCHOMIONY. Analiza środowiska co 1.0s...")
     except Exception as e:
         print(f"❌ [Audio AI] Błąd podczas inicjalizacji modeli: {e}")
         return
@@ -59,7 +57,7 @@ def uruchom_nasluch_live_cpu(fusion):
     def audio_callback(indata, frames, time_info, status):
         nonlocal bufor_audio
         if status:
-            print(f"⚠️ Status karty dźwiękowej: {status}", file=sys.stderr)
+            print(f"Status karty dźwiękowej: {status}", file=sys.stderr)
 
         # Przesuwamy dotychczasowe dane w lewo i dopisujemy nowe próbki z mikrofonu na koniec
         bufor_audio = np.roll(bufor_audio, -frames)
@@ -88,14 +86,14 @@ def uruchom_nasluch_live_cpu(fusion):
 
                 t_end = time.time()
 
-                # Przekazanie flagi (True/False) do wspólnego systemu fuzji logicznej
+                # Przekazanie flagi do wspólnego systemu fuzji logicznej
                 wykryto_syrene = bool(predykcja == 1)
                 fusion.update_audio(wykryto_syrene)
 
                 # Linia diagnostyczna w tle
-                stan_txt = "🔊 SYRENA!" if wykryto_syrene else "🤫 Tło"
+                stan_txt = "🔊 SYRENA!" if wykryto_syrene else "🔇 Tło"
                 sys.stdout.write(
-                    f"\r💻 [Audio CPU] Status: {stan_txt} ({prawdopodobienstwo:.1%}) | Czas AI: {t_end - t_start:.2f}s ")
+                    f"\r[Audio CPU] Status: {stan_txt} ({prawdopodobienstwo:.1%}) | Czas AI: {t_end - t_start:.2f}s ")
                 sys.stdout.flush()
 
     except Exception as e:

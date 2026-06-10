@@ -5,14 +5,13 @@ from transformers import pipeline
 import numpy as np
 import sounddevice as sd
 
-# --- POPRAWIONA KONFIGURACJA ---
 MODEL_NAME = "MIT/ast-finetuned-audioset-10-10-0.4593"
 KLASY_ALARMOWE = ["siren", "ambulance", "police car", "fire engine", "emergency vehicle"]
 PROG_PEWNOSCI = 0.02  # 2% - niski próg, złapiemy nawet cichą syrenę w tle
 
 SAMPLE_RATE = 16000
-DLUGOSC_OKNA_SEK = 4  # Model MUSI słyszeć 4 sekundy, żeby rozpoznać modulację syreny
-KROK_ANALIZY_SEK = 2  # Analiza co pół sekundy – idealny kompromis dla CPU
+DLUGOSC_OKNA_SEK = 4  # Model musi słyszeć 4 sekundy, żeby rozpoznać modulację syreny
+KROK_ANALIZY_SEK = 2  # Analiza co pół sekundy
 
 CHUNK_SIZE = int(SAMPLE_RATE * KROK_ANALIZY_SEK)
 BUFFER_SIZE = int(SAMPLE_RATE * DLUGOSC_OKNA_SEK)
@@ -27,9 +26,9 @@ def audio_callback(indata, frames, time, status):
 
 
 def uruchom_nasluch_cpu():
-    print("💻 [CPU] Inicjalizacja modelu...")
+    print("[CPU] Inicjalizacja modelu...")
 
-    # KLUCZOWE: Dodajemy top_k=20, żeby pipeline zwracał więcej klas, nie tylko top 5
+    # Dodajemy top_k=20, żeby pipeline zwracał więcej klas, nie tylko top 5
     klasyfikator = pipeline(
         "audio-classification",
         model=MODEL_NAME,
@@ -40,8 +39,8 @@ def uruchom_nasluch_cpu():
     bufor_audio = collections.deque(maxlen=BUFFER_SIZE)
     bufor_audio.extend(np.zeros(BUFFER_SIZE, dtype=np.float32))
 
-    print("\n🎤 URUCHAMIANIE MIKROFONU...")
-    print("📢 Testuj, puszczając dźwięk syreny przez min. 4-5 sekund.")
+    print("\nURUCHAMIANIE MIKROFONU...")
+    print("Testuj, puszczając dźwięk syreny przez min. 4-5 sekund.")
     print("-" * 60)
 
     stream = sd.InputStream(
@@ -86,7 +85,7 @@ def uruchom_nasluch_cpu():
                     print(f"🟢 [Nasłuch...] {tlo_info}")
 
             except KeyboardInterrupt:
-                print("\n🛑 Zatrzymano.")
+                print("\nZatrzymano.")
                 break
             except Exception as e:
                 print(f"❌ Błąd: {e}")

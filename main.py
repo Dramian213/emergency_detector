@@ -14,9 +14,9 @@ from fusion.logic import FusionLogic
 
 def main():
     print("========================================================")
-    print("🚦 SYSTEM FUZJI CZUJNIKÓW (WIDEO + AUDIO) URUCHOMIONY")
-    print("📢 Nasłuch mikrofonu (Wav2Vec2) i kamera działają w tle.")
-    print("🛑 Naciśnij Ctrl+C w oknie konsoli, aby zakończyć.")
+    print("SYSTEM (WIDEO + AUDIO) URUCHOMIONY")
+    print("Nasłuch mikrofonu (Wav2Vec2) i kamera działają w tle.")
+    print("Naciśnij Ctrl+C w oknie konsoli, aby zakończyć.")
     print("========================================================")
 
     # 1. Inicjalizacja głównej logiki fuzji danych
@@ -57,7 +57,7 @@ def main():
 
             # Maszyna stanów dla głównego komunikatu systemowego
             if both:
-                state = "🔴 [ALERT MAKSYMALNY] ZMIANA ŚWIATEŁ! (Syrena akustyczna + Pojazd w kadrze)"
+                state = "🔴 [ALERT] ZMIANA ŚWIATEŁ! (Syrena akustyczna + Pojazd w kadrze)"
             elif emergency:
                 state = "🚨 [WIZJA ALERT] POJAZD UPRZYWILEJOWANY W POLU WIDZENIA"
             elif siren:
@@ -74,14 +74,14 @@ def main():
                 print(state, flush=True)
                 last_state = state
 
-            # Krótki sen pętli głównej, żeby nie obciążać procesora (10 Hz wystarczy w zupełności)
+            # Krótki sen, żeby nie obciążać procesora
             time.sleep(0.1)
 
     except KeyboardInterrupt:
         sys.stdout.write("\r" + " " * 90 + "\r")
-        print("\n🛑 Wykryto ręczne zatrzymanie systemu (Ctrl+C).")
+        print("\nRęczne zatrzymanie systemu.")
     finally:
-        print("✅ Wszystkie podsystemy fuzji sensorów zostały bezpiecznie zamknięte.")
+        print("Wszystkie podsystemy zostały bezpiecznie zamknięte.")
 
 
 if __name__ == "__main__":
